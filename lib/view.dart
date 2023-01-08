@@ -23,7 +23,7 @@ class _ViewPageState extends State<ViewPage> {
         .list()
         .map((event) => XFile(event.path))
         .toList();
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       setState(() => _index++);
     });
   }
@@ -57,16 +57,19 @@ class _ViewPageState extends State<ViewPage> {
                         setState(() => _index = 0);
                       },
                       child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
+                        transitionBuilder: (child, animation) {
+                          return FadeTransition(opacity: animation, child: child);
+                        },
+                        duration: const Duration(milliseconds: 350),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
+                          key: UniqueKey(),
                           children: [
                             Text(data[_index % data.length].name),
                             Image.file(
                               File(data[_index % data.length].path),
                               fit: BoxFit.contain,
-                              key: UniqueKey(),
                             ),
                           ],
                         )
